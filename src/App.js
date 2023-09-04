@@ -1,26 +1,27 @@
-import React, {useCallback, useState} from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   Text,
   TextInput,
   StyleSheet,
-  SafeAreaView,
   TouchableOpacity,
   ActivityIndicator,
   useWindowDimensions,
 } from 'react-native';
 
-import {ms} from 'react-native-size-matters';
-import {inferContentTypeFromUrl} from './utils/globalMethods';
+import { ms } from 'react-native-size-matters';
+import { inferContentTypeFromUrl } from './utils/globalMethods';
 
 import RNFetchBlob from 'rn-fetch-blob';
 import WebView from 'react-native-webview';
+import SafeAreaWrapper from './components/SafeAreaWrapper';
+import Header from './components/Header';
 
 const App = () => {
   const [uri, setUri] = useState('');
   const [postUrl, setPostUrl] = useState('');
   const [downloading, setDownloading] = useState(false);
 
-  const {height, width} = useWindowDimensions();
+  const { height, width } = useWindowDimensions();
 
   const handleWebViewMsg = e => {
     if (e?.nativeEvent) {
@@ -86,7 +87,8 @@ const App = () => {
   `;
 
   return (
-    <SafeAreaView style={styles.safeAreaView}>
+    <SafeAreaWrapper style={styles.safeAreaView}>
+      <Header />
       {!uri ? (
         <>
           <TextInput
@@ -100,7 +102,7 @@ const App = () => {
       ) : (
         <>
           <WebView
-            source={{uri}}
+            source={{ uri }}
             onMessage={handleWebViewMsg}
             injectedJavaScript={INJECTED_JS}
             style={{
@@ -111,7 +113,7 @@ const App = () => {
           <TouchableOpacity
             disabled={!postUrl}
             onPress={downloadPost}
-            style={[styles.btn('#3a86ff'), {opacity: !postUrl ? 0.5 : 1}]}>
+            style={[styles.btn('#3a86ff'), { opacity: !postUrl ? 0.5 : 1 }]}>
             {downloading ? (
               <ActivityIndicator color={'white'} />
             ) : (
@@ -125,14 +127,14 @@ const App = () => {
           </TouchableOpacity>
         </>
       )}
-    </SafeAreaView>
+    </SafeAreaWrapper>
   );
 };
 
 export default App;
 
 const styles = StyleSheet.create({
-  safeAreaView: {flex: 1, justifyContent: 'center', alignItems: 'center'},
+  safeAreaView: {},
   txtInput: {
     width: '90%',
     borderRadius: ms(8),
@@ -149,5 +151,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   }),
-  btnTxt: {fontSize: ms(16), color: 'white'},
+  btnTxt: { fontSize: ms(16), color: 'white' },
 });
