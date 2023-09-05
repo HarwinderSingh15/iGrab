@@ -1,23 +1,45 @@
-import React from 'react';
-import InstagramLikeGradient from './InstagramGradient';
-
-import { arrow } from '../assets';
-import { FONTS } from '../theme/Fonts';
+import React, { useCallback } from 'react';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  ImageSourcePropType,
+} from 'react-native';
 import { ms } from 'react-native-size-matters';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { COLORS } from '../theme/Colors';
 
-const Header = () => {
+import { FONTS } from '../theme/Fonts';
+import { COLORS } from '../theme/Colors';
+import { name as appName } from '../../app.json';
+import InstagramLikeGradient from './InstagramGradient';
+import { goBack } from '../navigators/navigationRef';
+
+interface Props {
+  icon?: ImageSourcePropType;
+  title?: string;
+}
+
+const Header = ({ icon, title }: Props) => {
+  const emptyView = useCallback(() => <View style={styles.icon} />, []);
+
   return (
     <InstagramLikeGradient style={styles.cnt}>
-      <TouchableOpacity style={styles.icon}>
-        <Image
-          style={[styles.icon, { tintColor: COLORS.white }]}
-          source={arrow}
-        />
+      <TouchableOpacity
+        disabled={!icon}
+        onPress={() => goBack()}
+        style={styles.icon}>
+        {!!icon ? (
+          <Image
+            style={[styles.icon, { tintColor: COLORS.white }]}
+            source={icon}
+          />
+        ) : (
+          emptyView()
+        )}
       </TouchableOpacity>
-      <Text style={styles.headText}>iGrab</Text>
-      <View style={styles.icon} />
+      <Text style={styles.headText}>{title || appName}</Text>
+      {emptyView()}
     </InstagramLikeGradient>
   );
 };

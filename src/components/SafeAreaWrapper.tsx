@@ -5,7 +5,7 @@ import { SafeAreaView, StyleSheet, ViewStyle } from 'react-native';
 
 interface Props {
   children: ReactNode;
-  style: ViewStyle;
+  style?: ViewStyle;
 }
 
 const SafeAreaWrapper: FC<Props> = ({ children, style }) => {
@@ -19,6 +19,6 @@ export default SafeAreaWrapper;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.containerBlack,
+    backgroundColor: COLORS.appBlack,
   },
 });
