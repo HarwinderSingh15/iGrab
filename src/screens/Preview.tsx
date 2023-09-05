@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from 'react';
 import {
-  View,
   Text,
   StyleSheet,
   ActivityIndicator,
@@ -10,15 +9,16 @@ import {
 import WebView from 'react-native-webview';
 import RNFetchBlob from 'rn-fetch-blob';
 
-import { inferContentTypeFromUrl } from '../utils/globalMethods';
-import { ms } from 'react-native-size-matters';
-import SafeAreaWrapper from '../components/SafeAreaWrapper';
-import Header from '../components/Header';
-import { arrow } from '../assets';
 import {
   displayNormalNotification,
   displayProgressNotification,
 } from '../utils/notificationsByNotifee';
+import { arrow } from '../assets';
+import { ms } from 'react-native-size-matters';
+import { goBack } from '../navigators/navigationRef';
+import { inferContentTypeFromUrl } from '../utils/globalMethods';
+import Header from '../components/Header';
+import SafeAreaWrapper from '../components/SafeAreaWrapper';
 
 const Preview = ({ route }) => {
   const uri = route?.params?.uri;
@@ -42,6 +42,7 @@ const Preview = ({ route }) => {
 
   const handleNewUrl = useCallback(() => {
     onDone();
+    goBack();
   }, []);
 
   const downloadPost = useCallback(() => {

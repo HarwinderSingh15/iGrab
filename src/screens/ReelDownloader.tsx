@@ -1,13 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {
+  Text,
+  View,
+  Image,
   TextInput,
   StyleSheet,
-  View,
   TouchableOpacity,
-  Image,
-  Text,
 } from 'react-native';
 import { ms } from 'react-native-size-matters';
+import { useIsFocused } from '@react-navigation/native';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 import { FONTS } from '../theme/Fonts';
 import { COLORS } from '../theme/Colors';
@@ -16,10 +18,11 @@ import { NAVIGATION } from '../constants/Navigation';
 import { navigate } from '../navigators/navigationRef';
 import Header from '../components/Header';
 import SafeAreaWrapper from '../components/SafeAreaWrapper';
-import Clipboard from '@react-native-clipboard/clipboard';
 
 const ReelsDownloader = () => {
   const [uri, setUri] = useState('');
+
+  const isFocused = useIsFocused();
 
   const handlePasteUrl = useCallback(async () => {
     const copiedUri = await Clipboard.getString();
@@ -30,9 +33,15 @@ const ReelsDownloader = () => {
     if (!!uri) {
       navigate(NAVIGATION.Preview, { uri });
     } else {
-      alert("Please enter link to proceed.")
+      alert('Please enter link to proceed.');
     }
   }, [uri]);
+
+  useEffect(() => {
+    if (isFocused) {
+      setUri('');
+    }
+  }, [isFocused]);
 
   return (
     <SafeAreaWrapper style={styles.safeAreaView}>
