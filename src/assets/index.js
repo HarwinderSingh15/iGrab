@@ -6,3 +6,5 @@ export const mainBanner = require(PATH + 'main_banner.png');
 export const reelsDownloading = require(PATH + 'reels_download.png');
 export const paste = require(PATH + 'paste.png');
 export const go = require(PATH + 'go.png');
+export const download = require(PATH + 'download.png');
+export const newUrl = require(PATH + 'new_url.png');

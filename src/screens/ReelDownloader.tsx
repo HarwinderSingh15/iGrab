@@ -17,6 +17,7 @@ import { arrow, go, paste } from '../assets';
 import { NAVIGATION } from '../constants/Navigation';
 import { navigate } from '../navigators/navigationRef';
 import Header from '../components/Header';
+import CustomBtn from '../components/Button';
 import SafeAreaWrapper from '../components/SafeAreaWrapper';
 
 const ReelsDownloader = () => {
@@ -26,7 +27,7 @@ const ReelsDownloader = () => {
 
   const handlePasteUrl = useCallback(async () => {
     const copiedUri = await Clipboard.getString();
-    setUri(copiedUri);
+    setUri(prev => copiedUri);
   }, []);
 
   const goToPreview = useCallback(() => {
@@ -44,7 +45,7 @@ const ReelsDownloader = () => {
   }, [isFocused]);
 
   return (
-    <SafeAreaWrapper style={styles.safeAreaView}>
+    <SafeAreaWrapper>
       <Header title="Reels Downloader" icon={arrow} />
       <View>
         <TextInput
@@ -52,6 +53,7 @@ const ReelsDownloader = () => {
           inputMode="url"
           onChangeText={setUri}
           style={styles.txtInput}
+          clearButtonMode="always"
           cursorColor={COLORS.instaReddish}
           placeholder="paste or type url here"
         />
@@ -108,7 +110,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   btnCnt: { flexDirection: 'row', alignSelf: 'center' },
-  safeAreaView: {},
+
   txtInput: {
     width: '80%',
     height: ms(46),

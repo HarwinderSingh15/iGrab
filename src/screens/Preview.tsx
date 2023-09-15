@@ -1,23 +1,25 @@
 import React, { useCallback, useState } from 'react';
 import {
   Text,
+  View,
   StyleSheet,
-  ActivityIndicator,
   TouchableOpacity,
   useWindowDimensions,
 } from 'react-native';
-import WebView from 'react-native-webview';
-import RNFetchBlob from 'rn-fetch-blob';
-
 import {
   displayNormalNotification,
   displayProgressNotification,
 } from '../utils/notificationsByNotifee';
-import { arrow } from '../assets';
+import RNFetchBlob from 'rn-fetch-blob';
+import WebView from 'react-native-webview';
+
+import { COLORS } from '../theme/Colors';
+import { arrow, download, newUrl } from '../assets';
 import { ms } from 'react-native-size-matters';
 import { goBack } from '../navigators/navigationRef';
 import { inferContentTypeFromUrl } from '../utils/globalMethods';
 import Header from '../components/Header';
+import CustomBtn from '../components/Button';
 import SafeAreaWrapper from '../components/SafeAreaWrapper';
 
 const Preview = ({ route }) => {
@@ -119,19 +121,22 @@ const Preview = ({ route }) => {
           width,
         }}
       />
-      <TouchableOpacity
-        disabled={!postUrl}
-        onPress={downloadPost}
-        style={[styles.btn('#3a86ff'), { opacity: !postUrl ? 0.5 : 1 }]}>
-        {downloading ? (
-          <ActivityIndicator color={'white'} />
-        ) : (
-          <Text style={styles.btnTxt}>Download post</Text>
-        )}
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleNewUrl} style={styles.btn('#fb5607')}>
-        <Text style={styles.btnTxt}>New url</Text>
-      </TouchableOpacity>
+      <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+        <CustomBtn
+          title="Download"
+          icon={download}
+          handlePasteUrl={downloadPost}
+          iconStyles={{ backgroundColor: COLORS.instaReddish }}
+        />
+        <CustomBtn
+          title="New url"
+          icon={newUrl}
+          handlePasteUrl={handleNewUrl}
+          iconStyles={styles.whiteBg}
+          txtCntStyle={styles.whiteBg}
+          txtStyle={{ color: COLORS.instaReddish }}
+        />
+      </View>
     </SafeAreaWrapper>
   );
 };
@@ -139,15 +144,6 @@ const Preview = ({ route }) => {
 export default Preview;
 
 const styles = StyleSheet.create({
-  btn: (color: string) => ({
-    width: '70%',
-    height: ms(40),
-    borderRadius: ms(8),
-    alignSelf: 'center',
-    alignItems: 'center',
-    marginVertical: ms(10),
-    backgroundColor: color,
-    justifyContent: 'center',
-  }),
+  whiteBg: { backgroundColor: COLORS.white },
   btnTxt: { fontSize: ms(16), color: 'white' },
 });
