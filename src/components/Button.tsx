@@ -18,6 +18,7 @@ import { ms } from 'react-native-size-matters';
 interface Props {
   title: string;
   icon: ImageProps;
+  isLoading?: boolean;
   txtStyle?: TextStyle;
   iconStyles?: ImageStyle;
   txtCntStyle?: ViewStyle;
@@ -28,13 +29,14 @@ const CustomBtn = ({
   icon,
   title,
   txtStyle,
+  isLoading,
   iconStyles,
   txtCntStyle,
   handlePasteUrl,
   ...rest
 }: Props) => {
   return (
-    <View style={styles.cnt}>
+    <View style={[styles.cnt, { opacity: isLoading ? 0.5 : 1 }]}>
       <Image style={[styles.icon, iconStyles]} source={icon} />
       <TouchableOpacity
         {...rest}

@@ -30,7 +30,7 @@ const Preview = ({ route }) => {
 
   const { height, width } = useWindowDimensions();
 
-  const handleWebViewMsg = e => {
+  const handleWebViewMsg = (e: any) => {
     if (e?.nativeEvent) {
       const link = e?.nativeEvent?.data;
       setPostUrl(link);
@@ -98,6 +98,7 @@ const Preview = ({ route }) => {
   const INJECTED_JS = `
       (function() {
         setTimeout(() => {
+          document.body.style.color= "#333636"
           if (document.querySelectorAll("video").length > 0) {
             window.ReactNativeWebView.postMessage(document.querySelectorAll("video")[0].src);
           } else if (document.querySelectorAll('img').length > 0) {
@@ -124,6 +125,7 @@ const Preview = ({ route }) => {
         style={{
           height,
           width,
+          backgroundColor: COLORS.appBlack,
         }}
       />
       <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
@@ -131,6 +133,7 @@ const Preview = ({ route }) => {
           title="Download"
           icon={download}
           handlePasteUrl={downloadPost}
+          isLoading={downloading || !postUrl}
           iconStyles={{ backgroundColor: COLORS.instaReddish }}
         />
         <CustomBtn
