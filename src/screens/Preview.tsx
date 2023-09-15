@@ -14,7 +14,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import WebView from 'react-native-webview';
 
 import { COLORS } from '../theme/Colors';
-import { arrow, download, newUrl } from '../assets';
+import { arrow, close, download, newUrl } from '../assets';
 import { ms } from 'react-native-size-matters';
 import { goBack } from '../navigators/navigationRef';
 import { inferContentTypeFromUrl } from '../utils/globalMethods';
@@ -111,7 +111,12 @@ const Preview = ({ route }) => {
     `;
   return (
     <SafeAreaWrapper>
-      <Header title="Preview" icon={arrow} />
+      <Header
+        icon={arrow}
+        title="Preview"
+        rightIcon={close}
+        onRightPress={handleNewUrl}
+      />
       <WebView
         source={{ uri }}
         onMessage={handleWebViewMsg}

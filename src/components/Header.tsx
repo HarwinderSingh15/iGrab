@@ -16,11 +16,13 @@ import InstagramLikeGradient from './InstagramGradient';
 import { goBack } from '../navigators/navigationRef';
 
 interface Props {
-  icon?: ImageSourcePropType;
   title?: string;
+  onRightPress?: () => void;
+  icon?: ImageSourcePropType;
+  rightIcon?: ImageSourcePropType;
 }
 
-const Header = ({ icon, title }: Props) => {
+const Header = ({ icon, title, rightIcon, onRightPress }: Props) => {
   const emptyView = useCallback(() => <View style={styles.icon} />, []);
 
   return (
@@ -29,17 +31,22 @@ const Header = ({ icon, title }: Props) => {
         disabled={!icon}
         onPress={() => goBack()}
         style={styles.icon}>
-        {!!icon ? (
+        {!!icon ? <Image style={styles.icon} source={icon} /> : emptyView()}
+      </TouchableOpacity>
+      <Text style={styles.headText}>{title || appName}</Text>
+      <TouchableOpacity
+        disabled={!rightIcon}
+        onPress={onRightPress}
+        style={styles.icon}>
+        {!!rightIcon ? (
           <Image
-            style={[styles.icon, { tintColor: COLORS.white }]}
-            source={icon}
+            style={[styles.icon, { transform: [{ rotate: '270deg' }], width: ms(25), height: ms(25)}]}
+            source={rightIcon}
           />
         ) : (
           emptyView()
         )}
       </TouchableOpacity>
-      <Text style={styles.headText}>{title || appName}</Text>
-      {emptyView()}
     </InstagramLikeGradient>
   );
 };
@@ -59,5 +66,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: ms(15),
     justifyContent: 'space-between',
   },
-  icon: { width: ms(20), height: ms(20), transform: [{ rotate: '90deg' }] },
+  icon: {
+    width: ms(20),
+    height: ms(20),
+    tintColor: COLORS.white,
+    transform: [{ rotate: '90deg' }],
+  },
 });
