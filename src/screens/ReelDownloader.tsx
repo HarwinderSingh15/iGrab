@@ -17,8 +17,8 @@ import { arrow, go, paste } from '../assets';
 import { NAVIGATION } from '../constants/Navigation';
 import { navigate } from '../navigators/navigationRef';
 import Header from '../components/Header';
-import CustomBtn from '../components/Button';
 import SafeAreaWrapper from '../components/SafeAreaWrapper';
+import CustomBtn from '../components/Button';
 
 const ReelsDownloader = () => {
   const [uri, setUri] = useState('');
@@ -60,15 +60,13 @@ const ReelsDownloader = () => {
       </View>
 
       <View style={styles.btnCnt}>
-        <View style={styles.pasteBtn}>
-          <Image style={styles.pasteIcon} source={paste} />
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={handlePasteUrl}
-            style={styles.pasteTxtCnt}>
-            <Text style={styles.pasteTxt}>Paste</Text>
-          </TouchableOpacity>
-        </View>
+        <CustomBtn
+          onPress={handlePasteUrl}
+          txtCntStyle={styles.whiteBg}
+          icon={paste}
+          title="Paste"
+          txtStyle={{ color: COLORS.instaPinkkish }}
+        />
 
         <TouchableOpacity onPress={goToPreview} style={styles.previewBtn}>
           <Image style={styles.previewIcon} source={go} />
@@ -83,7 +81,6 @@ export default ReelsDownloader;
 const styles = StyleSheet.create({
   previewIcon: { width: ms(40), height: ms(40), borderRadius: ms(50) },
   previewBtn: {
-    marginTop: ms(30),
     alignSelf: 'center',
     alignItems: 'center',
     flexDirection: 'row',
@@ -109,7 +106,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
   },
-  btnCnt: { flexDirection: 'row', alignSelf: 'center' },
+  btnCnt: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+    justifyContent: 'center',
+  },
 
   txtInput: {
     width: '80%',
@@ -123,5 +124,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     fontFamily: FONTS.NunitoMedium,
     borderColor: COLORS.instaPinkkish,
+  },
+
+  whiteBg: {
+    backgroundColor: COLORS.white,
   },
 });

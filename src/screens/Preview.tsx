@@ -1,11 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  useWindowDimensions,
-} from 'react-native';
+import { Text, View, StyleSheet, useWindowDimensions } from 'react-native';
 import {
   displayNormalNotification,
   displayProgressNotification,
@@ -72,6 +66,7 @@ const Preview = ({ route }) => {
     // Progress Tracking
     task.progress((received, total) => {
       let percentage = (received / total) * 100;
+      console.log(percentage);
       displayProgressNotification(
         'iGrab-post-1',
         'Downloading',
@@ -110,6 +105,7 @@ const Preview = ({ route }) => {
         }, 5000)
       })();
     `;
+
   return (
     <SafeAreaWrapper>
       <Header
@@ -128,18 +124,23 @@ const Preview = ({ route }) => {
           backgroundColor: COLORS.appBlack,
         }}
       />
-      <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
         <CustomBtn
           title="Download"
           icon={download}
-          handlePasteUrl={downloadPost}
+          onPress={downloadPost}
           isLoading={downloading || !postUrl}
           iconStyles={{ backgroundColor: COLORS.instaReddish }}
         />
         <CustomBtn
           title="New url"
           icon={newUrl}
-          handlePasteUrl={handleNewUrl}
+          onPress={handleNewUrl}
           iconStyles={styles.whiteBg}
           txtCntStyle={styles.whiteBg}
           txtStyle={{ color: COLORS.instaReddish }}
