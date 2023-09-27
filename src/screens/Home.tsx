@@ -1,6 +1,13 @@
 import React, { useCallback } from 'react';
 import { ms } from 'react-native-size-matters';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Image,
+  Linking,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 import Header from '../components/Header';
 import SafeAreaWrapper from '../components/SafeAreaWrapper';
@@ -15,6 +22,10 @@ const Home = () => {
   const handleOnPress = useCallback(() => {
     navigate(NAVIGATION.ReelsDownloader);
   }, []);
+
+  const openPrivacyLink = () => {
+    Linking.openURL('https://igrab-tdh.web.app/');
+  };
 
   return (
     <SafeAreaWrapper>
@@ -32,6 +43,12 @@ const Home = () => {
 
         <Text style={styles.itemsName}>Reels Downloader</Text>
       </TouchableOpacity>
+
+      <View style={{ flex: 0.5 }} />
+
+      <TouchableOpacity onPress={() => {}} style={styles.footer}>
+        <Text style={styles.privacyPolicyText}>Privacy Policy</Text>
+      </TouchableOpacity>
     </SafeAreaWrapper>
   );
 };
@@ -39,6 +56,14 @@ const Home = () => {
 export default Home;
 
 const styles = StyleSheet.create({
+  footer: { alignSelf: 'center', marginBottom: ms(20) },
+
+  privacyPolicyText: {
+    color: COLORS.white,
+    fontFamily: FONTS.NunitoRegular,
+    textDecorationLine: 'underline',
+  },
+
   itemsName: {
     fontSize: ms(16),
     marginTop: ms(10),
