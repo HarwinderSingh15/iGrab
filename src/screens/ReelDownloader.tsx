@@ -17,8 +17,8 @@ import { arrow, go, paste } from '../assets';
 import { NAVIGATION } from '../constants/Navigation';
 import { navigate } from '../navigators/navigationRef';
 import Header from '../components/Header';
-import SafeAreaWrapper from '../components/SafeAreaWrapper';
 import CustomBtn from '../components/Button';
+import SafeAreaWrapper from '../components/SafeAreaWrapper';
 
 const ReelsDownloader = () => {
   const [uri, setUri] = useState('');
@@ -55,16 +55,16 @@ const ReelsDownloader = () => {
           style={styles.txtInput}
           clearButtonMode="always"
           cursorColor={COLORS.instaReddish}
-          placeholder="paste or type url here"
+          placeholder="Download posts from Instagram or Facebook"
         />
       </View>
 
       <View style={styles.btnCnt}>
         <CustomBtn
-          onPress={handlePasteUrl}
-          txtCntStyle={styles.whiteBg}
           icon={paste}
           title="Paste"
+          onPress={handlePasteUrl}
+          txtCntStyle={styles.whiteBg}
           txtStyle={{ color: COLORS.instaPinkkish }}
         />
 
@@ -80,16 +80,19 @@ export default ReelsDownloader;
 
 const styles = StyleSheet.create({
   previewIcon: { width: ms(40), height: ms(40), borderRadius: ms(50) },
+
   previewBtn: {
     alignSelf: 'center',
     alignItems: 'center',
     flexDirection: 'row',
   },
+
   pasteTxt: {
     marginLeft: ms(35),
     color: COLORS.instaPinkkish,
     fontFamily: FONTS.NunitoSemiBold,
   },
+
   pasteTxtCnt: {
     zIndex: -1,
     left: ms(-20),
@@ -99,13 +102,16 @@ const styles = StyleSheet.create({
     borderTopRightRadius: ms(25),
     backgroundColor: COLORS.white,
   },
+
   pasteIcon: { width: ms(40), height: ms(40), borderRadius: ms(50) },
+
   pasteBtn: {
     marginTop: ms(30),
     alignSelf: 'center',
     alignItems: 'center',
     flexDirection: 'row',
   },
+
   btnCnt: {
     flexDirection: 'row',
     alignSelf: 'center',

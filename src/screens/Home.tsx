@@ -27,6 +27,10 @@ const Home = () => {
     Linking.openURL('https://igrab-tdh.web.app/');
   };
 
+  const openMail = () => {
+    Linking.openURL('mailto:dev.harwinderr@gmail.com');
+  };
+
   return (
     <SafeAreaWrapper>
       <Header />
@@ -46,9 +50,14 @@ const Home = () => {
 
       <View style={{ flex: 0.5 }} />
 
-      <TouchableOpacity onPress={() => {}} style={styles.footer}>
-        <Text style={styles.privacyPolicyText}>Privacy Policy</Text>
-      </TouchableOpacity>
+      <View style={styles.footer}>
+        <TouchableOpacity onPress={openPrivacyLink}>
+          <Text style={styles.privacyPolicyText}>Privacy Policy</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={openMail}>
+          <Text style={styles.privacyPolicyText}>Contact Us</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaWrapper>
   );
 };
@@ -56,7 +65,14 @@ const Home = () => {
 export default Home;
 
 const styles = StyleSheet.create({
-  footer: { alignSelf: 'center', marginBottom: ms(20) },
+  footer: {
+    gap: ms(20),
+    alignSelf: 'center',
+    marginBottom: ms(20),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 
   privacyPolicyText: {
     color: COLORS.white,
@@ -72,7 +88,11 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.NunitoMedium,
   },
 
-  itemsImg: { width: ms(80), height: ms(80) },
+  itemsImg: {
+    width: ms(80),
+    height: ms(80),
+    backgroundColor: COLORS.containerBlack,
+  },
 
   itemsCnt: {
     width: ms(150),

@@ -3,12 +3,16 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import AppNavigator from './navigators/AppNavigator';
 import { navigationRef } from './navigators/navigationRef';
-import { getNotificationsPermissions } from './utils/notificationsByNotifee';
+import {
+  createChannelId,
+  getNotificationsPermissions,
+} from './utils/notificationsByNotifee';
 import Splash from './screens/Splash';
 
 function App() {
   const [hideSplash, setHideSplash] = useState(false);
   useEffect(() => {
+    createChannelId();
     getNotificationsPermissions();
 
     const clearId = setTimeout(() => {

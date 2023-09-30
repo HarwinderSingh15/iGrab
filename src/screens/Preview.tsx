@@ -1,5 +1,11 @@
 import React, { useCallback, useState } from 'react';
-import { Text, View, StyleSheet, useWindowDimensions } from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  useWindowDimensions,
+  Alert,
+} from 'react-native';
 import {
   displayNormalNotification,
   displayProgressNotification,
@@ -61,22 +67,18 @@ const Preview = ({ route }) => {
     };
 
     // Configure the download with RNFetchBlob
-    const task = RNFetchBlob.config(options).fetch('GET', postUrl);
-
-    // Progress Tracking
-    task.progress((received, total) => {
-      let percentage = (received / total) * 100;
-      console.log(percentage);
-      displayProgressNotification(
-        'iGrab-post-1',
-        'Downloading',
-        100,
-        percentage,
-      );
-    });
-
-    // Completion Handling
-    task
+    RNFetchBlob.config(options)
+      .fetch('GET', postUrl)
+      .progress((received, total) => {
+        let percentage = (received / total) * 100;
+        console.log(percentage);
+        displayProgressNotification(
+          'iGrab-post-1',
+          'Downloading',
+          100,
+          percentage,
+        );
+      })
       .then(() => {
         displayNormalNotification('iGrab-post-1', 'Download is successfull');
         setDownloading(false);

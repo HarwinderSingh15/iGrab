@@ -14,12 +14,17 @@ export const createChannelId = async () => {
   return channelId;
 };
 
-export const displayNormalNotification = async (id:string,title: string) => {
+export const displayNormalNotification = async (id: string, title: string) => {
   await notifee.displayNotification({
     id,
     title,
     android: {
-      channelId: await createChannelId(),
+      channelId: 'iGrab_3188',
+      smallIcon: 'ic_launcher',
+      pressAction: {
+        id,
+        launchActivity: 'default',
+      },
     },
   });
 };
@@ -34,7 +39,12 @@ export const displayProgressNotification = async (
     id,
     title,
     android: {
-      channelId: await createChannelId(),
+      pressAction: {
+        id,
+        launchActivity: 'default',
+      },
+      smallIcon: 'ic_launcher',
+      channelId: 'iGrab_3188',
       progress: {
         max,
         current,
