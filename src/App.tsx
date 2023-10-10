@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { RootSiblingParent } from 'react-native-root-siblings';
 
 import AppNavigator from './navigators/AppNavigator';
 import { navigationRef } from './navigators/navigationRef';
@@ -23,7 +24,7 @@ function App() {
   }, []);
 
   return (
-    <>
+    <RootSiblingParent>
       {!hideSplash ? (
         <Splash />
       ) : (
@@ -31,7 +32,7 @@ function App() {
           <AppNavigator />
         </NavigationContainer>
       )}
-    </>
+    </RootSiblingParent>
   );
 }
 

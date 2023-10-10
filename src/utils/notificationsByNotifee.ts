@@ -10,6 +10,7 @@ export const createChannelId = async () => {
   const channelId = await notifee.createChannel({
     id: 'iGrab_3188',
     name: 'iGrab Notis',
+    vibration: false,
   });
   return channelId;
 };
@@ -21,6 +22,7 @@ export const displayNormalNotification = async (id: string, title: string) => {
     android: {
       channelId: 'iGrab_3188',
       smallIcon: 'ic_launcher',
+      largeIcon: 'https://cdn-icons-png.flaticon.com/128/11005/11005470.png',
       pressAction: {
         id,
         launchActivity: 'default',

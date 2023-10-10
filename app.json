@@ -1,4 +1,7 @@
 {
   "name": "iGrab",
-  "displayName": "iGrab"
+  "displayName": "iGrab",
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-1135296730138963~5530319463"
+  }
 }

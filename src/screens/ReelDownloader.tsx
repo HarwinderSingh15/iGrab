@@ -19,6 +19,7 @@ import { navigate } from '../navigators/navigationRef';
 import Header from '../components/Header';
 import CustomBtn from '../components/Button';
 import SafeAreaWrapper from '../components/SafeAreaWrapper';
+import CustomAds from '../components/CustomAds';
 
 const ReelsDownloader = () => {
   const [uri, setUri] = useState('');
@@ -55,7 +56,7 @@ const ReelsDownloader = () => {
           style={styles.txtInput}
           clearButtonMode="always"
           cursorColor={COLORS.instaReddish}
-          placeholder="Download posts from Instagram or Facebook"
+          placeholder="Link from Instagram or Facebook"
         />
       </View>
 
@@ -72,6 +73,21 @@ const ReelsDownloader = () => {
           <Image style={styles.previewIcon} source={go} />
         </TouchableOpacity>
       </View>
+
+      <Text
+        style={{
+          width: '70%',
+          color: COLORS.white,
+          alignSelf: 'center',
+          textAlign: 'center',
+          marginTop: ms(10),
+          fontFamily: FONTS.NunitoMedium,
+          fontSize: ms(12, 0.3),
+        }}>
+        Copy reel or post link from the instagram or facebook and paste above
+      </Text>
+      <View style={{ flex: 1 }}></View>
+      <CustomAds />
     </SafeAreaWrapper>
   );
 };

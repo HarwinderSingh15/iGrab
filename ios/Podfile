@@ -28,8 +28,8 @@ end
 target 'iGrab' do
   config = use_native_modules!
   
-  pod 'rn-fetch-blob',
-  :path => '../node_modules/rn-fetch-blob'
+  pod 'react-native-blob-util',
+    :path => '../node_modules/react-native-blob-util'
   # Flags change depending on the env values.
   flags = get_default_flags()
 

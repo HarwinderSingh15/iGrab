@@ -1,12 +1,12 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { ms } from 'react-native-size-matters';
 import {
+  View,
+  Text,
   Image,
   Linking,
   StyleSheet,
-  Text,
   TouchableOpacity,
-  View,
 } from 'react-native';
 
 import Header from '../components/Header';
@@ -17,9 +17,12 @@ import { COLORS } from '../theme/Colors';
 import { NAVIGATION } from '../constants/Navigation';
 import { navigate } from '../navigators/navigationRef';
 import { homeBanner, reelsDownloading } from '../assets';
+import CustomAds from '../components/CustomAds';
+import analytics from '@react-native-firebase/analytics';
 
 const Home = () => {
   const handleOnPress = useCallback(() => {
+    analytics().logEvent("reels_download_press")
     navigate(NAVIGATION.ReelsDownloader);
   }, []);
 
@@ -58,6 +61,8 @@ const Home = () => {
           <Text style={styles.privacyPolicyText}>Contact Us</Text>
         </TouchableOpacity>
       </View>
+
+      <CustomAds />
     </SafeAreaWrapper>
   );
 };

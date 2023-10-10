@@ -1,26 +1,43 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
-  Text,
+  TestIds,
+  AdEventType,
+  InterstitialAd,
+} from 'react-native-google-mobile-ads';
+import {
   View,
   StyleSheet,
+  ActivityIndicator,
   useWindowDimensions,
-  Alert,
 } from 'react-native';
 import {
   displayNormalNotification,
   displayProgressNotification,
 } from '../utils/notificationsByNotifee';
-import RNFetchBlob from 'rn-fetch-blob';
 import WebView from 'react-native-webview';
+import Toast from 'react-native-root-toast';
+import RNBlobUtil from 'react-native-blob-util';
+import analytics from '@react-native-firebase/analytics';
 
 import { COLORS } from '../theme/Colors';
-import { arrow, close, download, newUrl } from '../assets';
 import { ms } from 'react-native-size-matters';
 import { goBack } from '../navigators/navigationRef';
+import { arrow, close, download, newUrl } from '../assets';
 import { inferContentTypeFromUrl } from '../utils/globalMethods';
 import Header from '../components/Header';
 import CustomBtn from '../components/Button';
 import SafeAreaWrapper from '../components/SafeAreaWrapper';
+import { BANNER_ADD_ID } from '../constants/constants';
+
+const TOAST_CONFIG = {
+  opacity: 0.9,
+  position: Toast.positions.BOTTOM,
+  containerStyle: {
+    width: ms(280),
+    height: ms(40),
+    backgroundColor: COLORS.appBlack,
+  },
+};
 
 const Preview = ({ route }) => {
   const uri = route?.params?.uri;
@@ -37,37 +54,44 @@ const Preview = ({ route }) => {
     }
   };
 
-  const onDone = useCallback((msg?: string) => {
+  const onDone = (msg?: string) => {
     setPostUrl('');
     setDownloading(false);
-  }, []);
+  };
 
-  const handleNewUrl = useCallback(() => {
+  const interstitial = InterstitialAd.createForAdRequest(
+    __DEV__ ? TestIds.INTERSTITIAL : BANNER_ADD_ID,
+    {
+      requestNonPersonalizedAdsOnly: true,
+      keywords: ['fashion', 'clothing', 'sport', 'social'],
+    },
+  );
+
+  const handleNewUrl = () => {
     onDone();
     goBack();
-  }, []);
+  };
 
   const downloadPost = useCallback(() => {
+    analytics().logEvent('download_started');
     setDownloading(true);
+    Toast.show('Downloading started', TOAST_CONFIG);
+
     const date = new Date();
     displayNormalNotification('iGrab-post-1', 'Downloading started');
-    let downloadDir = RNFetchBlob.fs.dirs.DownloadDir;
-    let options = {
-      fileCache: true,
-      addAndroidDownloads: {
-        useDownloadManager: true,
-        notification: false,
-        path:
-          downloadDir +
-          '/iGrab/' +
-          Math.floor(date.getTime() + date.getSeconds() / 2) +
-          inferContentTypeFromUrl(postUrl),
-        description: 'Downloading your post',
-      },
-    };
+    let downloadDir = RNBlobUtil.fs.dirs.DownloadDir;
 
-    // Configure the download with RNFetchBlob
-    RNFetchBlob.config(options)
+    const downloadPath =
+      downloadDir +
+      '/iGrab/' +
+      Math.floor(date.getTime() + date.getSeconds() / 2) +
+      inferContentTypeFromUrl(postUrl);
+
+    // Use react-native-blob-util to start the download
+    RNBlobUtil.config({
+      path: downloadPath,
+      fileCache: true,
+    })
       .fetch('GET', postUrl)
       .progress((received, total) => {
         let percentage = (received / total) * 100;
@@ -79,14 +103,23 @@ const Preview = ({ route }) => {
           percentage,
         );
       })
-      .then(() => {
-        displayNormalNotification('iGrab-post-1', 'Download is successfull');
-        setDownloading(false);
+      .then(res => {
+        if (res.respInfo.status === 200) {
+          displayNormalNotification('iGrab-post-1', 'Download is successful');
+          setDownloading(false);
+        } else {
+          displayNormalNotification(
+            'iGrab-post-1',
+            'Download is not successful! Please try again',
+          );
+          setDownloading(false);
+          Toast.show('Downloading complete', TOAST_CONFIG);
+        }
       })
       .catch(err => {
         displayNormalNotification(
           'iGrab-post-1',
-          'Download is unsuccessfull! please try again',
+          'Download is not successful! Please try again',
         );
         setDownloading(false);
       });
@@ -108,8 +141,32 @@ const Preview = ({ route }) => {
       })();
     `;
 
+  useEffect(() => {
+    interstitial.load();
+    interstitial.addAdEventListener(AdEventType.LOADED, () => {
+      if (downloading) {
+        interstitial.show();
+      }
+    });
+  }, [downloading]);
+
   return (
     <SafeAreaWrapper>
+      {!postUrl && (
+        <View
+          style={{
+            zIndex: 1,
+            width: '100%',
+            height: '100%',
+            position: 'absolute',
+            alignContent: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          }}>
+          <ActivityIndicator size="large" color={COLORS.instaPinkkish} />
+        </View>
+      )}
+
       <Header
         icon={arrow}
         title="Preview"
@@ -126,6 +183,7 @@ const Preview = ({ route }) => {
           backgroundColor: COLORS.appBlack,
         }}
       />
+
       <View
         style={{
           flexDirection: 'row',
