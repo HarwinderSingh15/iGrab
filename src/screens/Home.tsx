@@ -8,8 +8,10 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
+import { analytics } from '../utils/firebase';
 
 import Header from '../components/Header';
+import CustomAds from '../components/CustomAds';
 import SafeAreaWrapper from '../components/SafeAreaWrapper';
 
 import { FONTS } from '../theme/Fonts';
@@ -17,12 +19,10 @@ import { COLORS } from '../theme/Colors';
 import { NAVIGATION } from '../constants/Navigation';
 import { navigate } from '../navigators/navigationRef';
 import { homeBanner, reelsDownloading } from '../assets';
-import CustomAds from '../components/CustomAds';
-import analytics from '@react-native-firebase/analytics';
 
 const Home = () => {
   const handleOnPress = useCallback(() => {
-    analytics().logEvent("reels_download_press")
+    analytics.logEvent('reels_download_press');
     navigate(NAVIGATION.ReelsDownloader);
   }, []);
 
@@ -33,6 +33,13 @@ const Home = () => {
   const openMail = () => {
     Linking.openURL('mailto:dev.harwinderr@gmail.com');
   };
+
+  useEffect(() => {
+    analytics.logScreenView({
+      screen_name: NAVIGATION.Home,
+      screen_class: NAVIGATION.Home,
+    });
+  }, [])
 
   return (
     <SafeAreaWrapper>

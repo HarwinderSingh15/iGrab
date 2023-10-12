@@ -20,6 +20,7 @@ import Header from '../components/Header';
 import CustomBtn from '../components/Button';
 import SafeAreaWrapper from '../components/SafeAreaWrapper';
 import CustomAds from '../components/CustomAds';
+import { analytics } from '../utils/firebase';
 
 const ReelsDownloader = () => {
   const [uri, setUri] = useState('');
@@ -37,6 +38,7 @@ const ReelsDownloader = () => {
     } else {
       alert('Please enter link to proceed.');
     }
+    analytics.logEvent('link_pasted', { link: uri });
   }, [uri]);
 
   useEffect(() => {

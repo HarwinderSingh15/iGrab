@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "67729079883",
+    "project_id": "igrab-tdh",
+    "storage_bucket": "igrab-tdh.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:67729079883:android:5ae3b8cb4c684e465b57ce",
+        "android_client_info": {
+          "package_name": "com.igrab"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmYafueSV70vX2A2pCDSC6p0y4gMVVnrg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
