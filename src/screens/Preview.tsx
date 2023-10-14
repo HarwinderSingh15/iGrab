@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   TestIds,
   AdEventType,
@@ -6,6 +6,7 @@ import {
 } from 'react-native-google-mobile-ads';
 import {
   View,
+  Text,
   StyleSheet,
   ActivityIndicator,
   useWindowDimensions,
@@ -22,12 +23,13 @@ import analytics from '@react-native-firebase/analytics';
 import { COLORS } from '../theme/Colors';
 import { ms } from 'react-native-size-matters';
 import { goBack } from '../navigators/navigationRef';
+import { BANNER_ADD_ID } from '../constants/constants';
 import { arrow, close, download, newUrl } from '../assets';
 import { inferContentTypeFromUrl } from '../utils/globalMethods';
 import Header from '../components/Header';
 import CustomBtn from '../components/Button';
 import SafeAreaWrapper from '../components/SafeAreaWrapper';
-import { BANNER_ADD_ID } from '../constants/constants';
+import { FONTS } from '../theme/Fonts';
 
 const TOAST_CONFIG = {
   opacity: 0.9,
@@ -44,6 +46,9 @@ const Preview = ({ route }) => {
 
   const [postUrl, setPostUrl] = useState('');
   const [downloading, setDownloading] = useState(false);
+  const [notFound, setNotFound] = useState(false);
+
+  const wvRef = useRef(null);
 
   const { height, width } = useWindowDimensions();
 
@@ -66,6 +71,33 @@ const Preview = ({ route }) => {
       keywords: ['fashion', 'clothing', 'sport', 'social'],
     },
   );
+
+  const onNavigationStateChange = navState => {
+    const { url } = navState;
+
+    // Define regular expressions for Instagram, YouTube, and Facebook URLs
+    const instagramRegex = /https:\/\/(www\.)?instagram\.com/;
+    // const youtubeRegex = /https:\/\/(www\.)?youtube\.com/;
+    const facebookRegex = /https:\/\/(www\.)?facebook\.com/;
+
+    // Check if the URL matches any of the allowed domains
+    if (
+      instagramRegex.test(url) ||
+      // youtubeRegex.test(url) ||
+      facebookRegex.test(url)
+    ) {
+      return;
+    } else {
+      wvRef.current &&
+        wvRef.current.injectJavaScript(
+          'document.documentElement.innerHTML = "";',
+        );
+
+      setNotFound(true);
+      // Show an error message when the URL is not supported
+      Toast.show('This link is not supported', TOAST_CONFIG);
+    }
+  };
 
   const handleNewUrl = () => {
     onDone();
@@ -152,17 +184,8 @@ const Preview = ({ route }) => {
 
   return (
     <SafeAreaWrapper>
-      {!postUrl && (
-        <View
-          style={{
-            zIndex: 1,
-            width: '100%',
-            height: '100%',
-            position: 'absolute',
-            alignContent: 'center',
-            justifyContent: 'center',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          }}>
+      {!postUrl && !notFound && (
+        <View style={styles.loaderCnt}>
           <ActivityIndicator size="large" color={COLORS.instaPinkkish} />
         </View>
       )}
@@ -173,23 +196,27 @@ const Preview = ({ route }) => {
         rightIcon={close}
         onRightPress={handleNewUrl}
       />
-      <WebView
-        source={{ uri }}
-        onMessage={handleWebViewMsg}
-        injectedJavaScript={INJECTED_JS}
-        style={{
-          height,
-          width,
-          backgroundColor: COLORS.appBlack,
-        }}
-      />
 
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
+      {!notFound ? (
+        <WebView
+          ref={wvRef}
+          source={{ uri }}
+          onMessage={handleWebViewMsg}
+          injectedJavaScript={INJECTED_JS}
+          onNavigationStateChange={onNavigationStateChange}
+          style={{
+            height,
+            width,
+            backgroundColor: COLORS.appBlack,
+          }}
+        />
+      ) : (
+        <View style={styles.notSupportedText}>
+          <Text style={styles.notSupportedTxt}>This url is not supported.</Text>
+        </View>
+      )}
+
+      <View style={styles.btnCnt}>
         <CustomBtn
           title="Download"
           icon={download}
@@ -213,6 +240,28 @@ const Preview = ({ route }) => {
 export default Preview;
 
 const styles = StyleSheet.create({
+  notSupportedText: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  notSupportedTxt: {
+    color: COLORS.white,
+    fontSize: ms(14, 0.3),
+    fontFamily: FONTS.NunitoSemiBold,
+  },
+  btnCnt: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  loaderCnt: {
+    zIndex: 1,
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    alignContent: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0,0,0.5)',
+  },
   whiteBg: { backgroundColor: COLORS.white },
+
   btnTxt: { fontSize: ms(16), color: 'white' },
 });

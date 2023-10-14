@@ -4,6 +4,7 @@ import {
   View,
   Image,
   TextInput,
+  Appearance,
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
@@ -14,13 +15,13 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { FONTS } from '../theme/Fonts';
 import { COLORS } from '../theme/Colors';
 import { arrow, go, paste } from '../assets';
+import { analytics } from '../utils/firebase';
 import { NAVIGATION } from '../constants/Navigation';
 import { navigate } from '../navigators/navigationRef';
 import Header from '../components/Header';
 import CustomBtn from '../components/Button';
-import SafeAreaWrapper from '../components/SafeAreaWrapper';
 import CustomAds from '../components/CustomAds';
-import { analytics } from '../utils/firebase';
+import SafeAreaWrapper from '../components/SafeAreaWrapper';
 
 const ReelsDownloader = () => {
   const [uri, setUri] = useState('');
@@ -76,16 +77,7 @@ const ReelsDownloader = () => {
         </TouchableOpacity>
       </View>
 
-      <Text
-        style={{
-          width: '70%',
-          color: COLORS.white,
-          alignSelf: 'center',
-          textAlign: 'center',
-          marginTop: ms(10),
-          fontFamily: FONTS.NunitoMedium,
-          fontSize: ms(12, 0.3),
-        }}>
+      <Text style={styles.descriptText}>
         Copy reel or post link from the instagram or facebook and paste above
       </Text>
       <View style={{ flex: 1 }}></View>
@@ -97,6 +89,16 @@ const ReelsDownloader = () => {
 export default ReelsDownloader;
 
 const styles = StyleSheet.create({
+  descriptText: {
+    width: '70%',
+    marginTop: ms(10),
+    color: COLORS.white,
+    alignSelf: 'center',
+    textAlign: 'center',
+    fontSize: ms(12, 0.3),
+    fontFamily: FONTS.NunitoMedium,
+  },
+
   previewIcon: { width: ms(40), height: ms(40), borderRadius: ms(50) },
 
   previewBtn: {
@@ -145,9 +147,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: ms(20),
     borderTopLeftRadius: ms(25),
     borderTopRightRadius: ms(25),
-    backgroundColor: COLORS.white,
+    backgroundColor:
+      Appearance.getColorScheme() == 'dark' ? COLORS.appBlack : COLORS.white,
     fontFamily: FONTS.NunitoMedium,
     borderColor: COLORS.instaPinkkish,
+    color:
+      Appearance.getColorScheme() == 'dark' ? COLORS.white : COLORS.appBlack,
   },
 
   whiteBg: {
