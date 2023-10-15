@@ -9,6 +9,11 @@ import {
   getNotificationsPermissions,
 } from './utils/notificationsByNotifee';
 import Splash from './screens/Splash';
+import SpInAppUpdates, {
+  IAUUpdateKind,
+  StartUpdateOptions,
+} from 'sp-react-native-in-app-updates';
+import { Platform } from 'react-native';
 
 function App() {
   const [hideSplash, setHideSplash] = useState(false);
@@ -21,6 +26,23 @@ function App() {
     }, 1000);
 
     return () => clearTimeout(clearId);
+  }, []);
+
+  useEffect(() => {
+    const inAppUpdates = new SpInAppUpdates(
+      false, // isDebug
+    );
+    inAppUpdates.checkNeedsUpdate().then(result => {
+      if (result.shouldUpdate) {
+        let updateOptions: StartUpdateOptions = {};
+        if (Platform.OS === 'android') {
+          updateOptions = {
+            updateType: IAUUpdateKind.FLEXIBLE,
+          };
+        }
+        inAppUpdates.startUpdate(updateOptions);
+      }
+    });
   }, []);
 
   return (

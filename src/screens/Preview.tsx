@@ -120,8 +120,10 @@ const Preview = ({ route }) => {
 
     // Use react-native-blob-util to start the download
     RNBlobUtil.config({
-      path: downloadPath,
-      // fileCache: true,
+      addAndroidDownloads: {
+        path: downloadPath,
+        useDownloadManager: true,
+      },
     })
       .fetch('GET', postUrl)
       .progress((received, total) => {
@@ -134,17 +136,9 @@ const Preview = ({ route }) => {
         );
       })
       .then(res => {
-        if (res.respInfo.status === 200) {
-          displayNormalNotification('iGrab-post-1', 'Download is successful');
-          setDownloading(false);
-        } else {
-          displayNormalNotification(
-            'iGrab-post-1',
-            'Download is not successful! Please try again',
-          );
-          setDownloading(false);
-          Toast.show('Downloading complete', TOAST_CONFIG);
-        }
+        displayNormalNotification('iGrab-post-1', 'Download is successful');
+        setDownloading(false);
+        Toast.show('Downloading complete', TOAST_CONFIG);
       })
       .catch(err => {
         displayNormalNotification(
