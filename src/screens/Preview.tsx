@@ -111,23 +111,21 @@ const Preview = ({ route }) => {
 
     const date = new Date();
     displayNormalNotification('iGrab-post-1', 'Downloading started');
-    let downloadDir = RNBlobUtil.fs.dirs.DownloadDir;
 
-    const downloadPath =
-      downloadDir +
-      '/iGrab/' +
-      Math.floor(date.getTime() + date.getSeconds() / 2) +
-      inferContentTypeFromUrl(postUrl);
+    const downloadDir = `${RNBlobUtil.fs.dirs.LegacyDownloadDir}/iGrab`;
+
+    const downloadPath = `${downloadDir}/${Math.floor(
+      date.getTime() + date.getSeconds() / 2,
+    )}${inferContentTypeFromUrl(postUrl)}`;
 
     // Use react-native-blob-util to start the download
     RNBlobUtil.config({
       path: downloadPath,
-      fileCache: true,
+      // fileCache: true,
     })
       .fetch('GET', postUrl)
       .progress((received, total) => {
         let percentage = (received / total) * 100;
-        console.log(percentage);
         displayProgressNotification(
           'iGrab-post-1',
           'Downloading',
