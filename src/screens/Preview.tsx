@@ -15,21 +15,22 @@ import {
   displayNormalNotification,
   displayProgressNotification,
 } from '../utils/notificationsByNotifee';
+
+import Header from '../components/Header';
 import WebView from 'react-native-webview';
 import Toast from 'react-native-root-toast';
+import CustomBtn from '../components/Button';
 import RNBlobUtil from 'react-native-blob-util';
 import analytics from '@react-native-firebase/analytics';
+import SafeAreaWrapper from '../components/SafeAreaWrapper';
 
+import { FONTS } from '../theme/Fonts';
 import { COLORS } from '../theme/Colors';
 import { ms } from 'react-native-size-matters';
 import { goBack } from '../navigators/navigationRef';
 import { BANNER_ADD_ID } from '../constants/constants';
 import { arrow, close, download, newUrl } from '../assets';
 import { inferContentTypeFromUrl } from '../utils/globalMethods';
-import Header from '../components/Header';
-import CustomBtn from '../components/Button';
-import SafeAreaWrapper from '../components/SafeAreaWrapper';
-import { FONTS } from '../theme/Fonts';
 
 const TOAST_CONFIG = {
   opacity: 0.9,

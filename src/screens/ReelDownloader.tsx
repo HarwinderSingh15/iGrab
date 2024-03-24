@@ -8,19 +8,20 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import { ms } from 'react-native-size-matters';
-import { useIsFocused } from '@react-navigation/native';
-import Clipboard from '@react-native-clipboard/clipboard';
 
 import { FONTS } from '../theme/Fonts';
 import { COLORS } from '../theme/Colors';
 import { arrow, go, paste } from '../assets';
 import { analytics } from '../utils/firebase';
+import { ms } from 'react-native-size-matters';
 import { NAVIGATION } from '../constants/Navigation';
 import { navigate } from '../navigators/navigationRef';
+import { useIsFocused } from '@react-navigation/native';
+
 import Header from '../components/Header';
 import CustomBtn from '../components/Button';
 import CustomAds from '../components/CustomAds';
+import Clipboard from '@react-native-clipboard/clipboard';
 import SafeAreaWrapper from '../components/SafeAreaWrapper';
 
 const ReelsDownloader = () => {

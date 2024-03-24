@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect } from 'react';
-import { ms } from 'react-native-size-matters';
 import {
   View,
   Text,
@@ -8,7 +7,6 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import { analytics } from '../utils/firebase';
 
 import Header from '../components/Header';
 import CustomAds from '../components/CustomAds';
@@ -16,6 +14,8 @@ import SafeAreaWrapper from '../components/SafeAreaWrapper';
 
 import { FONTS } from '../theme/Fonts';
 import { COLORS } from '../theme/Colors';
+import { analytics } from '../utils/firebase';
+import { ms } from 'react-native-size-matters';
 import { NAVIGATION } from '../constants/Navigation';
 import { navigate } from '../navigators/navigationRef';
 import { homeBanner, reelsDownloading } from '../assets';
@@ -39,7 +39,7 @@ const Home = () => {
       screen_name: NAVIGATION.Home,
       screen_class: NAVIGATION.Home,
     });
-  }, [])
+  }, []);
 
   return (
     <SafeAreaWrapper>

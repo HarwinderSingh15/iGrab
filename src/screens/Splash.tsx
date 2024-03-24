@@ -1,11 +1,11 @@
 import React from 'react';
-import { ImageBackground, StyleSheet, Text, View } from 'react-native';
 import { splash } from '../assets';
+import { ImageBackground, StyleSheet, View } from 'react-native';
 
 const Splash = () => {
   return (
     <View style={{ flex: 1 }}>
-      <ImageBackground style={{flex: 1}} source={splash} />
+      <ImageBackground style={{ flex: 1 }} source={splash} />
     </View>
   );
 };

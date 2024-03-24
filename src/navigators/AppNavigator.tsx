@@ -1,11 +1,10 @@
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Home from '../screens/Home';
+import Preview from '../screens/Preview';
+import ReelsDownloader from '../screens/ReelDownloader';
 
 import { NAVIGATION } from '../constants/Navigation';
-
-import Home from '../screens/Home';
-import ReelsDownloader from '../screens/ReelDownloader';
-import Preview from '../screens/Preview';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
 
